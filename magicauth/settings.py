@@ -1,4 +1,5 @@
 from django.conf import settings as django_settings
+from django.utils.translation import ugettext as _
 
 # To add magicauth to your site, you need to add these values to your site settings
 # (the rest have defaults, you are free to change them if you want):
@@ -15,7 +16,7 @@ from django.conf import settings as django_settings
 #################
 # Email settings
 #################
-EMAIL_SUBJECT = getattr(django_settings, "MAGICAUTH_EMAIL_SUBJECT", "Lien de connexion")
+EMAIL_SUBJECT = getattr(django_settings, "MAGICAUTH_EMAIL_SUBJECT", _("Login Link"))
 EMAIL_HTML_TEMPLATE = getattr(
     django_settings, "MAGICAUTH_EMAIL_HTML_TEMPLATE", "magicauth/email.html"
 )
@@ -92,7 +93,7 @@ EMAIL_UNKNOWN_CALLBACK = getattr(
 # If using the default EMAIL_UNKNOWN_CALLBACK,
 # this message will be displayed when an unknown email is entered.
 EMAIL_UNKNOWN_MESSAGE = getattr(
-    django_settings, "MAGICAUTH_EMAIL_UNKNOWN_MESSAGE", "Aucun utilisateur trouvé."
+    django_settings, "MAGICAUTH_EMAIL_UNKNOWN_MESSAGE", _("No user found.")
 )
 # How long the user will wait on the WAIT_URL page before doing the actual login.
 WAIT_SECONDS = getattr(
@@ -106,6 +107,13 @@ ENABLE_2FA = getattr(
 OTP_NUM_DIGITS = getattr(
     django_settings, "MAGICAUTH_OTP_NUM_DIGITS", 6
 )
-if OTP_NUM_DIGITS not in [6, 8] :
-    raise ValueError("OTP_NUM_DIGITS must be either 6 or 8 character long --> https://django-otp-official.readthedocs.io/en/stable/overview.html#django_otp.plugins.otp_totp.models.TOTPDevice.digits")
+if OTP_NUM_DIGITS not in [6, 8]:
+    raise ValueError(
+        "OTP_NUM_DIGITS must be either 6 or 8 character long --> https://django-otp-official.readthedocs.io/en/stable/overview.html#django_otp.plugins.otp_totp.models.TOTPDevice.digits")
 
+LANGUAGE_CODE = getattr(django_settings, "LANGUAGE_CODE", "en-us")
+TIME_ZONE = getattr(django_settings, "TIME_ZONE", "UTC")
+
+USE_I18N = getattr(django_settings, "USE_I18N", True)
+USE_L10N = getattr(django_settings, "USE_L10N", True)
+USE_TZ = getattr(django_settings, "USE_TZ", True)

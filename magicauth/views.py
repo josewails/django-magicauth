@@ -8,14 +8,14 @@ from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.views.generic import View, FormView, TemplateView
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext as _
+
 from magicauth import settings as magicauth_settings
-from magicauth.forms import EmailForm
 
 from magicauth.forms import EmailForm, OTPForm
 from magicauth.models import MagicToken
 from magicauth.next_url import NextUrlMixin
 from magicauth.send_token import SendTokenMixin
-
 
 logger = logging.getLogger()
 
@@ -63,7 +63,7 @@ class LoginView(NextUrlMixin, SendTokenMixin, FormView):
             OTP_form = OTPForm(user=user, data=self.request.POST)
             if OTP_form.is_valid():
                 return True
-            for error in OTP_form.errors["otp_token"] :
+            for error in OTP_form.errors["otp_token"]:
                 form.add_error("email", error)
                 return False
 
@@ -139,9 +139,10 @@ class ValidateTokenView(NextUrlMixin, View):
         if not token:
             messages.warning(
                 self.request,
-                "Ce lien de connexion ne fonctionne plus. "
-                "Pour en recevoir un nouveau, nous vous invitons à renseigner "
-                "votre email ci-dessous puis à cliquer sur valider.",
+                _(
+                    "This connection link no longer works. To receive a new one, "
+                    "we invite you to enter your email address below then click on validate."
+                )
             )
             return redirect("magicauth-login")
         url = self.get_next_url(request)
